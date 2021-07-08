@@ -2,6 +2,85 @@
 <search> 
   
   
+    
+    <entry>
+      <title>windows读取usb硬盘xfs文件系统的文件</title>
+      <link href="/2021/07/08/windows-du-qu-usb-ying-pan-xfs-wen-jian-xi-tong-de-wen-jian/"/>
+      <url>/2021/07/08/windows-du-qu-usb-ying-pan-xfs-wen-jian-xi-tong-de-wen-jian/</url>
+      
+        <content type="html"><![CDATA[<h1 id="windows读取usb硬盘xfs文件系统的文件"><a href="#windows读取usb硬盘xfs文件系统的文件" class="headerlink" title="windows读取usb硬盘xfs文件系统的文件"></a>windows读取usb硬盘xfs文件系统的文件</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>因为自己家里的电脑是linux,而且喜欢linux的文件系统,所以整个移动硬盘都是xfs的文件格式,而现在公司的电脑是windows,要复制文件就比较艰难</p><h2 id="狗哥一下"><a href="#狗哥一下" class="headerlink" title="狗哥一下"></a>狗哥一下</h2><p>发现网上的方案都是使用软件,而且软件也不怎么样,总之就是没有找到像样的软件,尤其是xfs还不是ext4</p><h2 id="使用虚拟机"><a href="#使用虚拟机" class="headerlink" title="使用虚拟机"></a>使用虚拟机</h2><ol><li>先装一个virtualbox</li><li><code>Oracle_VM_VirtualBox_Extension_Pack</code>安装,这样才能使用外置的usb硬盘</li><li>下一个linux的live镜像,如<code>manjaro kde</code></li><li>usb设置里面挂载usb硬盘</li><li>新创建一个vhd硬盘挂载</li><li>把vhd硬盘新建分区,并且格式化成ntfs格式</li><li>把usb移动硬盘的文件,copy到vhd硬盘里面</li><li>最好关机以后,用windows自带的<code>磁盘管理</code>挂载vhd硬盘</li><li>复制你的文件到你想要的位置</li></ol><img src="/2021/07/08/windows-du-qu-usb-ying-pan-xfs-wen-jian-xi-tong-de-wen-jian/disk_manager.png" class="" title="windows的磁盘管理"><p>还是比较费劲的,但是也没办法.如果你有现成的linux虚拟机,并且装好了<code>VBoxGuestAdditions</code><br>,那么事情就比较简单了,直接可以把usb硬盘挂载了以后,利用virtualbox的共享文件夹,直接复制到windows,这样就好办多了</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>还是比较费劲的,但是也没办法,需求.不过linux可是能比较好的识别windows的硬盘</p><h2 id="升华"><a href="#升华" class="headerlink" title="升华"></a>升华</h2><p>目前wsl2支持挂载usb硬盘,但是我的不是预览版,功能还没有,如果你是预览版的,或者以后wsl2升级了,那么windows使用linux文件的系统,应该会简单很多</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 日记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> windows </tag>
+            
+            <tag> xfs </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>神舟笔记本每次开机都要自己打开wifi的解决问题记录</title>
+      <link href="/2021/07/08/shen-zhou-bi-ji-ben-mei-ci-kai-ji-du-yao-zi-ji-da-kai-wifi-de-jie-jue-wen-ti-ji-lu/"/>
+      <url>/2021/07/08/shen-zhou-bi-ji-ben-mei-ci-kai-ji-du-yao-zi-ji-da-kai-wifi-de-jie-jue-wen-ti-ji-lu/</url>
+      
+        <content type="html"><![CDATA[<h1 id="神舟笔记本每次开机都要自己打开wifi的解决问题记录"><a href="#神舟笔记本每次开机都要自己打开wifi的解决问题记录" class="headerlink" title="神舟笔记本每次开机都要自己打开wifi的解决问题记录"></a>神舟笔记本每次开机都要自己打开wifi的解决问题记录</h1><p>试了好多<code>linux</code>操作系统以后,最终回到了起点,还是<code>manjaro</code>,但是现在发现,每次关机,开机以后都没有wifi,然后我每次都是<code>restart</code>来解决,终于,我决定不忍了,把这’最后一个’问题解决掉</p><h2 id="锁定现象"><a href="#锁定现象" class="headerlink" title="锁定现象"></a>锁定现象</h2><p>通过关机开机,重新启动我发现,关机开机以后就没有wifi,重新启动就有wifi,kde的networks面板显示<code>wifi is deactivated</code></p><h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><h3 id="查看日志"><a href="#查看日志" class="headerlink" title="查看日志"></a>查看日志</h3><p>我很仔细的对比了半天日志,<code>journalctl -p err -b</code>,甚至<code>info</code><br>我也对比了,花费了大量的时间,但是却发现没有任何问题,而且通过其它的命令,我发现驱动啥的貌似都好好的,没有任何问题.看来自己的设想方向是不对的,从结果来看,真不是驱动的问题.所以,刚开始做了很多无用功</p><h3 id="wifi-is-deactivated"><a href="#wifi-is-deactivated" class="headerlink" title="wifi is deactivated"></a><code>wifi is deactivated</code></h3><p>仔细查看了kde的networks面板显示以后,我发现<code>wifi is deactivated</code>,搜索以后,我发现,网上有人指出这个命令<code>rfkill list</code>,如下图 <img src="/2021/07/08/shen-zhou-bi-ji-ben-mei-ci-kai-ji-du-yao-zi-ji-da-kai-wifi-de-jie-jue-wen-ti-ji-lu/rfkill_list.png" class="" title="蓝牙和wifi的打开关闭状态"> 不过,这是个后来的截图,以前的情况是<code>Hard blocked: yes</code></p><h3 id="Hard-blocked"><a href="#Hard-blocked" class="headerlink" title="Hard blocked"></a><code>Hard blocked</code></h3><p>原来<code>Hard blocked</code>是硬件关闭的意思,<a href="https://askubuntu.com/questions/1325028/wifi-gets-hard-blocked-on-ubuntu-20-04-2-hp-15-series" title="askubuntu的详尽解释" target="">askubuntu的详尽解释</a>,硬件关闭应该意味着软件无法打开,除了bios保存状态可以读取以外还原以外.里面的硬件图片,让我看看我的电脑,果然看到了fn的快捷键里面有wifi的标志,原来是wifi真的被硬件关闭了 <img src="/2021/07/08/shen-zhou-bi-ji-ben-mei-ci-kai-ji-du-yao-zi-ji-da-kai-wifi-de-jie-jue-wen-ti-ji-lu/hard_block.png" class="" title="硬件关闭的例子"></p><h3 id="真的要每次开机手动打开wifi吗"><a href="#真的要每次开机手动打开wifi吗" class="headerlink" title="真的要每次开机手动打开wifi吗"></a>真的要每次开机手动打开wifi吗</h3><p>我记得我前几天安装manjaro的时候,出了点问题,所以修改了bios,以前的时候,也用的<code>kali</code><br>,也没遇到过这种问题,我决定去bios看一下,看看能不能从bios打开,进去看了以后,我就发现了我前几天修改的设置<code>cold boot keep status</code>,也就是冷启动的时候,仍然保持硬件状态,我重新<code>enabled</code><br>以后,结果开机以后,发现wifi直接就连上了</p><h3 id="问题总结"><a href="#问题总结" class="headerlink" title="问题总结"></a>问题总结</h3><p>前几天修改bios,把<code>cold boot keep status</code>禁用了,导致wifi的状态不能保存,然后一旦冷启动,就需要重新打开,不是<code>manjaro</code>的锅</p><h3 id="新知识-冷启动和热启动"><a href="#新知识-冷启动和热启动" class="headerlink" title="新知识,冷启动和热启动"></a>新知识,冷启动和热启动</h3><p>重启分为冷启动和热启动,冷启动,关机以后的开机,自检然后进入系统,热启动就是重启,关机了以后,不自检,而且保存电脑本来的硬件状态,直接启动,所以说,重启和关机开机还是有些区别的.例如,有些时候,装了一些系统软件以后,比如virtualbox或者系统更新,都会说,重新启动才能生效,这里的重新启动,有时候甚至必须是重新启动,关机再开机是不行的,所以,重新启动和关机开机真不是一码事</p><h2 id="改进"><a href="#改进" class="headerlink" title="改进"></a>改进</h2><p>以后出了问题,先看现象再搜索,看看大家都是怎么解决的,才能更快的找到答案,自己猜猜对了还好,猜不对就是浪费时间</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 日记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+            <tag> 硬件 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>mysql中tinyint(1)和tinyint(4)到底有什么区别</title>
+      <link href="/2019/11/30/mysql-zhong-tinyint-1-he-tinyint-4-dao-di-you-shi-me-qu-bie/"/>
+      <url>/2019/11/30/mysql-zhong-tinyint-1-he-tinyint-4-dao-di-you-shi-me-qu-bie/</url>
+      
+        <content type="html"><![CDATA[<h1 id="mysql中tinyint-1-和tinyint-4-到底有什么区别"><a href="#mysql中tinyint-1-和tinyint-4-到底有什么区别" class="headerlink" title="mysql中tinyint(1)和tinyint(4)到底有什么区别"></a>mysql中tinyint(1)和tinyint(4)到底有什么区别</h1><h2 id="tinyint基础"><a href="#tinyint基础" class="headerlink" title="tinyint基础"></a>tinyint基础</h2><p>tinyint存储使用了1个字节,就是8位,只能存储2^8即256个数字.在mysql实现中,有符号是-128-127,无符号是0-255,tinyint后面的括号带的数字,以后暂称之为M,<strong>那么1和4到底有什么区别呢?</strong><br>接下来我们就探讨一下M的作用</p><h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>实践出真知</p><h3 id="1-常规测试"><a href="#1-常规测试" class="headerlink" title="1. 常规测试"></a>1. 常规测试</h3><p>使用基本的表,插入基本的数据</p><img src="/2019/11/30/mysql-zhong-tinyint-1-he-tinyint-4-dao-di-you-shi-me-qu-bie/basic_table.png" class="" title="基本表"><p>查询后发现没有任何区别</p><img src="/2019/11/30/mysql-zhong-tinyint-1-he-tinyint-4-dao-di-you-shi-me-qu-bie/basic_test.png" class="" title="基本测试"><p>可以发现没有任何区别,实际上就是没有任何区别,如果你用navicat之类的工具试验,也会发现没有任何差别,详情可以参见引用<a href="http://stackoverflow.com/questions/12839927/mysql-tinyint-2-vs-tinyint1-what-is-the-difference" title="stackoverflow的链接" target="">stackoverflow用户AamirR的回答</a>里面Aamir的回答可以做很好的验证</p><h3 id="2-无符号建表-同时zerofill"><a href="#2-无符号建表-同时zerofill" class="headerlink" title="2. 无符号建表,同时zerofill"></a>2. 无符号建表,同时zerofill</h3><p>建表的基本语句是</p><img src="/2019/11/30/mysql-zhong-tinyint-1-he-tinyint-4-dao-di-you-shi-me-qu-bie/unsigned_table.png" class="" title="无符号建表"><p>最后查询结果如下,比较明显</p><img src="/2019/11/30/mysql-zhong-tinyint-1-he-tinyint-4-dao-di-you-shi-me-qu-bie/unsigned_query.png" class="" title="无符号查询"><p>zerofill的整数字段必须无符号,这里可以看出M显示出了特定的宽度,不够的时候会填充0,多余了不作处理</p><h2 id="官方解释"><a href="#官方解释" class="headerlink" title="官方解释"></a>官方解释</h2><p>这里查阅的官方文档是5.7英文版<a href="https://dev.mysql.com/doc/refman/5.7/en/numeric-type-attributes.html" title="官方文档的链接" target="">传送门</a></p><p>这里摘抄其中重要的一段</p><p>MySQL supports an extension for optionally specifying the display width of integer data types in parentheses following the base keyword for the type. For example, INT(4) specifies an INT with a display width of four digits. This optional display width may be used by applications to display integer values having a width less than the width specified for the column by left-padding them with spaces. (That is, this width is present in the metadata returned with result sets. Whether it is used or not is up to the application.)</p><p>The display width does not constrain the range of values that can be stored in the column. Nor does it prevent values wider than the column display width from being displayed correctly. For example, a column specified as SMALLINT(3) has the usual SMALLINT range of -32768 to 32767, and values outside the range permitted by three digits are displayed in full using more than three digits.</p><p>When used in conjunction with the optional (nonstandard) attribute ZEROFILL, the default padding of spaces is replaced with zeros. For example, for a column declared as INT(4) ZEROFILL, a value of 5 is retrieved as 0005.</p><p>至此,也验证了我们的结论.</p><ol><li>M绝对和存储的值没有关系</li><li>无符号和zerofill的时候会填充0,显示成M对应的宽度</li><li>整数类型都一样,有默认的显示宽度</li><li>M作为元数据存储,推荐是显示的宽度,但是最终的解释权归使用的程序所有</li></ol><h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>最后,我的建议是,就是M其实没用,tinyint默认是4,其余的数字类型也有默认值,以后程序开发中,涉及整形数字的M时,可以不必纠结,直接忽略,使用数据库默认的M值即可</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据库 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> mysql </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
   
   
 </search>
